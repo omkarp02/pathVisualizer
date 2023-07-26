@@ -7,6 +7,7 @@ import {
   START_NODE_ROW,
   animationSpeedTime,
   createGrid,
+  resetGridVisitedAndDistance,
   time,
 } from "@/utils/helper";
 import { useEffect, useState } from "react";
@@ -18,6 +19,10 @@ import {
 } from "@/utils/algoritms/dijkstra";
 
 import Cell from "./Cell";
+import Navbar from "./Navbar";
+import SecondNavbar from "./secondNavbar";
+
+let wallNodeList = [];
 
 export default function PathVisualizer() {
   const startEndInitialState = {
@@ -30,13 +35,13 @@ export default function PathVisualizer() {
   let [grid, setGrid] = useState([]);
   const [startEnd, setStartEnd] = useState(startEndInitialState);
   const [dragStart, setDragStart] = useState(false);
+  const [dragState, setDragState] = useState(null);
   const [algorithmInitialized, setAlgorithmInitialized] = useState(false);
 
   const initializeGrid = () => {
     const tempGrid = createGrid();
     setGrid(tempGrid);
   };
-
 
   const resetGrid = (state, onlyCss) => {
     const resetObj = {
@@ -45,13 +50,14 @@ export default function PathVisualizer() {
     };
     for (let row of grid) {
       for (let cell of row) {
+        if(cell.isWall) continue;
         const node = document.getElementById(`${cell.row}-${cell.col}-cell`);
         if (node.className === resetObj[state] || resetObj[state] === "reset") {
           node.className = styles.cell;
         }
       }
     }
-    if(!onlyCss){
+    if (!onlyCss) {
       initializeGrid();
       setAlgorithmInitialized(false);
     }
@@ -60,14 +66,14 @@ export default function PathVisualizer() {
   const animateShortestPath = (nodesInShortestPathOrder, animate) => {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       const node = nodesInShortestPathOrder[i];
-      if(animate){
+      if (animate) {
         setTimeout(() => {
           document.getElementById(`${node.row}-${node.col}-cell`).className =
             shortestPathStyle;
         }, i * animationSpeedTime);
-      }else{
+      } else {
         document.getElementById(`${node.row}-${node.col}-cell`).className =
-        shortestPathStyle;
+          shortestPathStyle;
       }
     }
   };
@@ -102,15 +108,25 @@ export default function PathVisualizer() {
   };
 
   const runAlgo = (animate) => {
-    grid = createGrid();
-    resetGrid("reset", true)
+    grid = resetGridVisitedAndDistance(grid);
+    resetGrid("reset", true);
     const { start, end } = startEnd;
     const startNode = grid[start.row][start.col];
     const finishNode = grid[end.row][end.col];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     animateNodes(visitedNodesInOrder, nodesInShortestPathOrder, animate);
-    if(!algorithmInitialized) setAlgorithmInitialized(true);
+    if (!algorithmInitialized) setAlgorithmInitialized(true);
+  };
+
+  const updateWall = () => {
+    setGrid((prev)=>{
+      for(const node of wallNodeList){
+        prev[node.row][node.col].isWall = node.isWall
+      }
+      return prev;
+    })
+    wallNodeList.length = 0;
   };
 
   useEffect(() => {
@@ -125,9 +141,9 @@ export default function PathVisualizer() {
 
   return (
     <>
+      <Navbar runAlgo={()=> runAlgo(true)} />
+      <SecondNavbar reset={()=> resetGrid("reset")}  />
       <div className={styles.mainDiv}>
-        <button onClick={()=> runAlgo(true)}>start</button>
-        <button onClick={() => resetGrid("reset")}>reset</button>
         <div className={styles.gridContainer}>
           {grid.map((cols, colIndex) => {
             return (
@@ -140,7 +156,11 @@ export default function PathVisualizer() {
                       startEnd={startEnd}
                       setStartEnd={setStartEnd}
                       setDragStart={setDragStart}
+                      setDragState={setDragState}
+                      wallNodeList={wallNodeList}
+                      dragState={dragState}
                       dragStart={dragStart}
+                      updateWall={updateWall}
                     />
                   );
                 })}

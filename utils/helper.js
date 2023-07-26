@@ -25,7 +25,19 @@ export const createGrid = () => {
   return tempGrid;
 };
 
-export const createNode = (col, row) => {
+export const resetGridVisitedAndDistance = (grid) => {
+  const tempGrid = [];
+  for (let i = 0; i < row; i++) {
+    const currentRow = [];
+    for (let j = 0; j < column; j++) {
+      currentRow.push(createNode(j, i, grid[i][j].isWall));
+    }
+    tempGrid.push(currentRow);
+  }
+  return tempGrid;
+};
+
+export const createNode = (col, row, wall) => {
   return {
     col,
     row,
@@ -33,5 +45,6 @@ export const createNode = (col, row) => {
     prevNode: null,
     isVisited: false,
     state: null,
+    isWall: wall ? true : false,
   };
 };

@@ -8,19 +8,17 @@
 }
 
 .shortestPath{
-    background-color: orange !important;
-}
-
-.start{
-    background-color: blue;
-}
-.end{
-    background-color: yellow;
+    background-color: yellow !important;
 }
 
 .visited{
     background-color: red;
 }
+
+.wall{
+    background-color: black;
+}
+
 .gridContainer{
     height: fit-content;
     width: fit-content;

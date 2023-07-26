@@ -8,14 +8,19 @@ export const dijkstra = (grid, src, dest) => {
 
   while(!unVisitedNodes.isEmpty()){
     const curNode = unVisitedNodes.pop()
+    
+    if(curNode.isWall) continue
+    if(curNode.distance === Infinity) {
+      return visitedNodesInOrder;
+    }
     curNode.isVisited = true
-
     visitedNodesInOrder.push(curNode)
     if(curNode.row  === dest.row && curNode.col === dest.col) {
       return visitedNodesInOrder;
     }
     updateUnvisitedNodeNeighbor(curNode, grid, unVisitedNodes)
   }
+  return visitedNodesInOrder;
 };
 
 export let prevNodesInShortestPathOrder = null
