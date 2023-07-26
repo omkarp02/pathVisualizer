@@ -1,0 +1,44 @@
+.cell{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-width: 0.5px;
+    border-style: solid;
+    border-color: rgb(175, 216, 248);
+}
+
+.shortestPath{
+    background-color: orange !important;
+}
+
+.start{
+    background-color: blue;
+}
+.end{
+    background-color: yellow;
+}
+
+.visited{
+    background-color: red;
+}
+.gridContainer{
+    height: fit-content;
+    width: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0.414);
+}
+
+.mainDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.startEnd{
+    position: relative;
+    font-size: 21px;
+}
+
+.row{
+    height: 22px;
+    width: fit-content;
+}
