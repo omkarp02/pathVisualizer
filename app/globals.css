@@ -1,3 +1,13 @@
+:root {
+  --grid: #ffa6009f;
+  --cellSize: 22px;
+  --white: #ffffff;
+  --orange: #ffa500;
+  --darkOrange: #ff8c00;
+  --orangeRed: #ff4500;
+  --orangeBurnt: rgb(204,85,0);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

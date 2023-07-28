@@ -1,42 +1,149 @@
-.cell{
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    border-width: 0.5px;
-    border-style: solid;
-    border-color: rgb(175, 216, 248);
+.cell {
+  position: relative;
+  display: inline-block;
+  width: var(--cellSize);
+  height: var(--cellSize);
 }
 
-.shortestPath{
-    background-color: yellow !important;
+.shortestPath {
+  background-color:var(--orangeRed) !important;
+  border-color: white !important;
 }
 
-.visited{
-    background-color: red;
+.animateShortestPath {
+  animation-name: shortestPathAnimation;
+  animation-duration: .6s;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
 
-.wall{
-    background-color: black;
+@keyframes shortestPathAnimation {
+  0% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
-.gridContainer{
-    height: fit-content;
-    width: fit-content;
-    border: 1px solid rgba(0, 0, 0, 0.414);
+
+
+.visited {
+  border-color: white !important;
+  background-color: var(--orange);
 }
 
-.mainDiv{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.animateVisited {
+  animation-name: visitedAnimation;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
 
-.startEnd{
-    position: relative;
-    font-size: 21px;
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: var(--orangeBurnt);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: var(--orangeRed);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: var(--darkOrange);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: var(--orange);
+  }
 }
 
-.row{
-    height: 22px;
-    width: fit-content;
+.insideCell {
+  z-index: -4;
+  position: relative;
+  width: var(--cellSize);
+  height: var(--cellSize);
+  border-color: var(--grid);
+  border-width: 0.5px;
+  border-style: solid;
+  box-sizing: border-box;
+}
+
+.wall {
+  font-size: var(--cellSize);
+  z-index: -2;
+  position: relative;
+}
+
+.weight {
+  z-index: -2;
+  position: relative;
+}
+
+.weightIcon {
+  top: 2px;
+  left: 2px;
+  z-index: -1;
+}
+
+.startArrow{
+  transition: all 1s ease;
+}
+
+.down{
+  transform: rotate(90deg);
+}
+
+.right{
+  transform: rotate(0deg);
+}
+
+.left{
+  transform: rotate(180deg);
+}
+
+.up{
+  transform: rotate(270deg);
+}
+
+.weightText {
+  color: white;
+  top: 8px;
+  left: 7px;
+  font-size: 8px;
+  user-select: none;
+}
+
+.gridContainer {
+  height: fit-content;
+  width: fit-content;
+  border: 1px solid var(--orangeRed);
+}
+
+.mainDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.startEnd {
+  position: relative;
+  font-size: 21px;
+}
+
+.row {
+  height: var(--cellSize);
+  width: fit-content;
 }

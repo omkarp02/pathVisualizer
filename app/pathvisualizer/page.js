@@ -5,75 +5,91 @@ import {
   FINISH_NODE_ROW,
   START_NODE_COL,
   START_NODE_ROW,
-  animationSpeedTime,
+  animationVisitedNodeSpeedTime,
+  animationShortestPathSpeedTime,
   createGrid,
-  resetGridVisitedAndDistance,
-  time,
+  resetGridByCond,
 } from "@/utils/helper";
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
-import {
-  dijkstra,
-  getNodesInShortestPathOrder,
-  prevNodesInShortestPathOrder,
-} from "@/utils/algoritms/dijkstra";
-
 import Cell from "./Cell";
 import Navbar from "./Navbar";
 import SecondNavbar from "./secondNavbar";
-
-let wallNodeList = [];
+import { findThePathFromStartToFinish } from "@/utils/algoritms";
 
 export default function PathVisualizer() {
   const startEndInitialState = {
     start: { row: START_NODE_ROW, col: START_NODE_COL },
     end: { row: FINISH_NODE_ROW, col: FINISH_NODE_COL },
   };
-  const visitedStyle = `${styles.cell} ${styles.visited}`;
-  const shortestPathStyle = `${styles.cell} ${styles.shortestPath}`;
+  const visitedStyle = `${styles.insideCell} ${styles.visited}`;
+  const animateVisited = styles.animateVisited;
+  const animateShortestPathStyle = styles.animateShortestPath;
+  const shortestPathStyle = `${styles.insideCell} ${styles.shortestPath}`;
 
   let [grid, setGrid] = useState([]);
   const [startEnd, setStartEnd] = useState(startEndInitialState);
   const [dragStart, setDragStart] = useState(false);
   const [dragState, setDragState] = useState(null);
+  const [weight, setWeight] = useState({ flag: false, weight: 2 });
   const [algorithmInitialized, setAlgorithmInitialized] = useState(false);
+  const [algorithm, setAlgorithm] = useState("dijkstra");
+  const [arrowDirection, setArrowDirection] = useState("right");
 
   const initializeGrid = () => {
-    const tempGrid = createGrid();
+    const tempGrid = createGrid(algorithm);
     setGrid(tempGrid);
   };
 
   const resetGrid = (state, onlyCss) => {
-    const resetObj = {
-      visited: visitedStyle,
-      reset: "reset",
-    };
     for (let row of grid) {
       for (let cell of row) {
-        if(cell.isWall) continue;
+        const condObj = {
+          all: true,
+          withoutWall: !cell.isWall,
+          keepWallAndWeight: !(cell.isWall || cell.weight > 1),
+        };
         const node = document.getElementById(`${cell.row}-${cell.col}-cell`);
-        if (node.className === resetObj[state] || resetObj[state] === "reset") {
-          node.className = styles.cell;
+        if (condObj[state] && node) {
+          node.className = styles.insideCell;
         }
       }
     }
     if (!onlyCss) {
-      initializeGrid();
+      const newGrid = resetGridByCond(grid, state, algorithm);
+      setGrid([...newGrid]);
       setAlgorithmInitialized(false);
     }
   };
 
+  const setArrowDirectionFn = (row, col) => {
+    const { start } = startEnd;
+    const colLess = start.col > col;
+    const rowLess = start.row > row;
+    if (start.row !== row && rowLess) setArrowDirection("up");
+    else if (start.row !== row && !rowLess) setArrowDirection("down");
+    else if (colLess) setArrowDirection("left");
+    else setArrowDirection("right");
+  };
+
   const animateShortestPath = (nodesInShortestPathOrder, animate) => {
+    if (nodesInShortestPathOrder[1]) {
+      setArrowDirectionFn(
+        nodesInShortestPathOrder[1].row,
+        nodesInShortestPathOrder[1].col
+      );
+    }
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       const node = nodesInShortestPathOrder[i];
-      if (animate) {
-        setTimeout(() => {
-          document.getElementById(`${node.row}-${node.col}-cell`).className =
-            shortestPathStyle;
-        }, i * animationSpeedTime);
-      } else {
-        document.getElementById(`${node.row}-${node.col}-cell`).className =
-          shortestPathStyle;
+      const cell = document.getElementById(`${node.row}-${node.col}-cell`);
+      if (cell) {
+        if (animate) {
+          setTimeout(() => {
+            cell.className = `${shortestPathStyle} ${animateShortestPathStyle}`;
+          }, i * animationShortestPathSpeedTime + 500);
+        } else {
+          cell.className = shortestPathStyle;
+        }
       }
     }
   };
@@ -88,45 +104,58 @@ export default function PathVisualizer() {
         if (animate) {
           setTimeout(() => {
             animateShortestPath(nodesInShortestPathOrder, animate);
-          }, i * animationSpeedTime);
+          }, i * animationVisitedNodeSpeedTime);
         } else {
           animateShortestPath(nodesInShortestPathOrder, animate);
         }
       } else {
         const node = visitedNodesInOrder[i];
-        if (animate) {
-          setTimeout(() => {
-            document.getElementById(`${node.row}-${node.col}-cell`).className =
-              visitedStyle;
-          }, i * animationSpeedTime);
-        } else {
-          document.getElementById(`${node.row}-${node.col}-cell`).className =
-            visitedStyle;
+        const cell = document.getElementById(`${node.row}-${node.col}-cell`);
+        if (cell) {
+          if (animate) {
+            setTimeout(() => {
+              cell.className = `${visitedStyle} ${
+                animate ? animateVisited : ""
+              }`;
+            }, i * animationVisitedNodeSpeedTime);
+          } else {
+            cell.className = `${visitedStyle} ${animate ? animateVisited : ""}`;
+          }
         }
       }
     }
   };
 
   const runAlgo = (animate) => {
-    grid = resetGridVisitedAndDistance(grid);
-    resetGrid("reset", true);
+    grid = resetGridByCond(grid, "keepWallAndWeight", algorithm);
+    resetGrid("keepWallAndWeight", true);
     const { start, end } = startEnd;
     const startNode = grid[start.row][start.col];
     const finishNode = grid[end.row][end.col];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    const { visitedNodesInOrder, nodesInShortestPathOrder } = findThePathFromStartToFinish(
+      grid,
+      startNode,
+      finishNode,
+      algorithm
+    );
     animateNodes(visitedNodesInOrder, nodesInShortestPathOrder, animate);
     if (!algorithmInitialized) setAlgorithmInitialized(true);
   };
 
-  const updateWall = () => {
-    setGrid((prev)=>{
-      for(const node of wallNodeList){
-        prev[node.row][node.col].isWall = node.isWall
-      }
-      return prev;
-    })
-    wallNodeList.length = 0;
+  const updateWall = (row, col) => {
+    setGrid((prev) => {
+      prev[row][col].isWall = !prev[row][col].isWall;
+      prev[row][col].weight = 1;
+      return [...prev];
+    });
+  };
+
+  const addWeight = (row, col, _weight) => {
+    setGrid((prev) => {
+      prev[row][col].weight = prev[row][col].weight > 1 ? 1 : Number(_weight);
+      prev[row][col].isWall = false;
+      return [...prev];
+    });
   };
 
   useEffect(() => {
@@ -141,8 +170,15 @@ export default function PathVisualizer() {
 
   return (
     <>
-      <Navbar runAlgo={()=> runAlgo(true)} />
-      <SecondNavbar reset={()=> resetGrid("reset")}  />
+      <Navbar runAlgo={() => runAlgo(true)} />
+      <SecondNavbar
+        setDragState={setDragState}
+        setAlgorithm={setAlgorithm}
+        algorithm={algorithm}
+        weight={weight}
+        setWeight={setWeight}
+        reset={(val) => resetGrid(val)}
+      />
       <div className={styles.mainDiv}>
         <div className={styles.gridContainer}>
           {grid.map((cols, colIndex) => {
@@ -157,9 +193,11 @@ export default function PathVisualizer() {
                       setStartEnd={setStartEnd}
                       setDragStart={setDragStart}
                       setDragState={setDragState}
-                      wallNodeList={wallNodeList}
                       dragState={dragState}
                       dragStart={dragStart}
+                      weight={weight}
+                      arrowDirection={arrowDirection}
+                      addWeight={addWeight}
                       updateWall={updateWall}
                     />
                   );

@@ -4,10 +4,10 @@ export const dijkstra = (grid, src, dest) => {
   const visitedNodesInOrder = [];
   const unVisitedNodes = new Heap()
   src.distance = 0;
-  unVisitedNodes.insert(src)
+  unVisitedNodes.insert(src, 'distance')
 
   while(!unVisitedNodes.isEmpty()){
-    const curNode = unVisitedNodes.pop()
+    const curNode = unVisitedNodes.pop('distance')
     
     if(curNode.isWall) continue
     if(curNode.distance === Infinity) {
@@ -18,14 +18,14 @@ export const dijkstra = (grid, src, dest) => {
     if(curNode.row  === dest.row && curNode.col === dest.col) {
       return visitedNodesInOrder;
     }
-    updateUnvisitedNodeNeighbor(curNode, grid, unVisitedNodes)
+    updateUnvisitedNodeNeighbor(curNode, grid, unVisitedNodes, dest)
   }
   return visitedNodesInOrder;
 };
 
 export let prevNodesInShortestPathOrder = null
 
-const updateUnvisitedNodeNeighbor = (curNode, grid, unVisitedNodes) => {
+const updateUnvisitedNodeNeighbor = (curNode, grid, unVisitedNodes, dest) => {
     const {row, col} = curNode
     const neighbors = []
     if(row > 0) neighbors.push(grid[row - 1][col])
@@ -34,10 +34,10 @@ const updateUnvisitedNodeNeighbor = (curNode, grid, unVisitedNodes) => {
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
     for(let node of neighbors){
-        if(!node.isVisited && node.distance > curNode.distance + 1){
-            node.distance = curNode.distance + 1
+        if(!node.isVisited && node.distance > (curNode.distance + Number(curNode.weight) )){
+            node.distance = curNode.distance + Number(curNode.weight) 
             node.prevNode = curNode
-            unVisitedNodes.insert(node)
+            unVisitedNodes.insert(node, 'distance')
         }
     }
 }

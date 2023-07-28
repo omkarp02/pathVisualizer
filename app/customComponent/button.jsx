@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const Button = ({text, size='md', ...otherProps}) => {
+const Button = ({ text, size = "md", value, withCancel, ...otherProps }) => {
   return (
-    <button className={`btn btn-primary btn-${size}`}  {...otherProps} >
-      {text}
+    <button className={`btn btn-primary btn-${size}`} {...otherProps}>
+      {withCancel ? (!value ? text : "cancel") : text}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;
