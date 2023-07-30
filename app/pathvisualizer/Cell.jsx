@@ -73,7 +73,7 @@ const Cell = ({
       style={{ backgroundColor: "transparent" }}
     >
       {start ? (
-        <div draggable={false} className={styles.startEnd}>
+        <div draggable={false} className={styles.startEnd}  id={`${node.row}-${node.col}-cell`}>
           <Image
             src="/start2.svg"
             width={22}
@@ -87,7 +87,7 @@ const Cell = ({
         ""
       )}
       {end ? (
-        <div draggable={false} className={styles.startEnd}>
+        <div draggable={false} className={styles.startEnd}  id={`${node.row}-${node.col}-cell`}>
           <Image
             src="/finish4.svg"
             width={22}

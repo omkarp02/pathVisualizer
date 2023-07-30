@@ -16,6 +16,7 @@ import Cell from "./Cell";
 import Navbar from "./Navbar";
 import SecondNavbar from "./secondNavbar";
 import { findThePathFromStartToFinish } from "@/utils/algoritms";
+import { mazeGeneratorAlgo } from "@/utils/algoritms/mazeGenerator";
 
 export default function PathVisualizer() {
   const startEndInitialState = {
@@ -132,12 +133,8 @@ export default function PathVisualizer() {
     const { start, end } = startEnd;
     const startNode = grid[start.row][start.col];
     const finishNode = grid[end.row][end.col];
-    const { visitedNodesInOrder, nodesInShortestPathOrder } = findThePathFromStartToFinish(
-      grid,
-      startNode,
-      finishNode,
-      algorithm
-    );
+    const { visitedNodesInOrder, nodesInShortestPathOrder } =
+      findThePathFromStartToFinish(grid, startNode, finishNode, algorithm);
     animateNodes(visitedNodesInOrder, nodesInShortestPathOrder, animate);
     if (!algorithmInitialized) setAlgorithmInitialized(true);
   };
@@ -158,6 +155,15 @@ export default function PathVisualizer() {
     });
   };
 
+  const generateMaze = () => {
+    const mazeWallInOrder = mazeGeneratorAlgo(grid);
+    setGrid((prev)=> {
+      return [...prev]
+    })
+  };
+
+
+
   useEffect(() => {
     initializeGrid();
   }, []);
@@ -170,7 +176,10 @@ export default function PathVisualizer() {
 
   return (
     <>
-      <Navbar runAlgo={() => runAlgo(true)} />
+      <Navbar
+        runAlgo={() => runAlgo(true)}
+        generateMaze={() => generateMaze()}
+      />
       <SecondNavbar
         setDragState={setDragState}
         setAlgorithm={setAlgorithm}

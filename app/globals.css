@@ -25,6 +25,36 @@ a {
   text-decoration: none;
 }
 
+nav{
+  width: 100%;
+  background-color: white;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-inline: 50px;
+  z-index: 10;
+}
+
+
+.hoverPrimary {
+  display: inline-block;
+  font-size: 2em;
+  font-weight: 800;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    var(--orange),
+    red 50%,
+    black 50%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  background-position: 100%;
+  transition: background-position 275ms ease;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
