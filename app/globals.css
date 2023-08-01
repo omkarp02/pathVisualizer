@@ -2,10 +2,12 @@
   --grid: #ffa6009f;
   --cellSize: 22px;
   --white: #ffffff;
-  --orange: #ffa500;
+  --orange: #ffa600d9;
   --darkOrange: #ff8c00;
   --orangeRed: #ff4500;
-  --orangeBurnt: rgb(204,85,0);
+  --orangeBurnt: rgb(204, 85, 0);
+  --paleBlue: rgb(4, 116, 186);
+  --gradient: linear-gradient(to right, #ff4e00, #ec9f05);
 }
 
 * {
@@ -25,34 +27,93 @@ a {
   text-decoration: none;
 }
 
-nav{
-  width: 100%;
-  background-color: white;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding-inline: 50px;
-  z-index: 10;
+.bg-gradient {
+  background: var(--gradient) !important;
 }
 
+.contact-button {
+  max-height: 35px;
+  padding: 5px 20px;
+  font-size: 15px;
+  border-radius: 40px;
+}
 
 .hoverPrimary {
   display: inline-block;
   font-size: 2em;
   font-weight: 800;
   overflow: hidden;
-  background: linear-gradient(
-    to right,
-    var(--orange),
-    red 50%,
-    black 50%
-  );
+  background: linear-gradient(to right, var(--orange), red 50%, black 50%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% 100%;
   background-position: 100%;
   transition: background-position 275ms ease;
+}
+
+.weightButton {
+  background: white;
+  border: 2px solid var(--darkOrange);
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  box-sizing: border-box;
+  z-index: 10;
+  position: relative;
+}
+
+.weightContainer {
+  position: relative;
+}
+
+.weightSelect {
+  position: absolute;
+  height: 0px;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  top: 15px;
+  z-index: 1;
+}
+
+.increaseHeight {
+  height: 240px;
+}
+
+.weightList {
+  border-left: 2px solid var(--darkOrange);
+  border-right: 2px solid var(--darkOrange);
+  text-align: center;
+  background-color: white;
+  width: 32px;
+  cursor: pointer;
+}
+
+.weightList:last-child {
+  border-bottom: 2px solid var(--darkOrange);
+  border-radius: 0 0 50% 50%;
+}
+
+.visualizeContainer {
+  position: absolute;
+  width: 114px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px solid var(--darkOrange);
+  top: 26px;
+  background-color: white;
+  border-radius: 0 0 20px 20px;
+  height: 0;
+  transition: all .3s;
+  overflow: hidden;
+}
+
+.visualizeContainerHeight{
+  height: 100px;
+  padding-top: 20px;
+}
+
+.visualizeSelect {
 }
 
 @media (prefers-color-scheme: dark) {

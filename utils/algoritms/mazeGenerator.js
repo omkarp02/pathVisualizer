@@ -1,10 +1,12 @@
-export const mazeGeneratorAlgo = (grid) => {
-  const traversingNodes = [grid[0][0]];
+export const mazeGeneratorAlgo = (grid, startEnd) => {
+  const {start, end} = startEnd
+  grid[end.row][end.col].visited = true
+  const traversingNodes = [grid[start.row][start.col]];
   const wallNodesInOrder = [];
   while (traversingNodes.length !== 0) {
     const length = traversingNodes.length - 1;
     const curNode = traversingNodes[length];
-    curNode.isVisited = true;
+    curNode.visited = true;
     if (traversingNodes.length) {
       getNeighbors(curNode, traversingNodes, grid, wallNodesInOrder);
     }
@@ -17,19 +19,19 @@ const getNeighbors = (curNode, traversingNodes, grid, wallNodesInOrder) => {
   const { row, col } = curNode;
   const neighbors = {};
   let count = 0;
-  if (row > 0 && !grid[row - 1][col].isVisited && !grid[row - 1][col].isWall)
+  if (row > 0 && !grid[row - 1][col].visited && !grid[row - 1][col].isWall)
     neighbors[++count] = { direction: "up", node: grid[row - 1][col] };
   if (
     row < grid.length - 1 &&
-    !grid[row + 1][col].isVisited &&
+    !grid[row + 1][col].visited &&
     !grid[row + 1][col].isWall
   )
     neighbors[++count] = { direction: "down", node: grid[row + 1][col] };
-  if (col > 0 && !grid[row][col - 1].isVisited && !grid[row][col - 1].isWall)
+  if (col > 0 && !grid[row][col - 1].visited && !grid[row][col - 1].isWall)
     neighbors[++count] = { direction: "left", node: grid[row][col - 1] };
   if (
     col < grid[0].length - 1 &&
-    !grid[row][col + 1].isVisited &&
+    !grid[row][col + 1].visited &&
     !grid[row][col + 1].isWall
   )
     neighbors[++count] = { direction: "right", node: grid[row][col + 1] };

@@ -6,7 +6,7 @@
 }
 
 .shortestPath {
-  background-color:var(--orangeRed) !important;
+  background-color:var(--paleBlue) !important;
   border-color: white !important;
 }
 
@@ -98,7 +98,8 @@
   z-index: -1;
 }
 
-.startArrow{
+
+.startEndImg{
   transition: all 1s ease;
 }
 

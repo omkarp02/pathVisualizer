@@ -73,12 +73,15 @@ const Cell = ({
       style={{ backgroundColor: "transparent" }}
     >
       {start ? (
-        <div draggable={false} className={styles.startEnd}  id={`${node.row}-${node.col}-cell`}>
+        <div
+          draggable={false}
+          className={styles.startEnd}
+        >
           <Image
             src="/start2.svg"
             width={22}
             height={22}
-            className={`position-absolute ${styles.startArrow} ${styles[arrowDirection]}`}
+            className={`position-absolute ${styles.startArrow} ${styles.startEndImg} ${styles[arrowDirection]}`}
             style={{ userSelect: "none" }}
             alt="Picture of the author"
           />
@@ -87,12 +90,15 @@ const Cell = ({
         ""
       )}
       {end ? (
-        <div draggable={false} className={styles.startEnd}  id={`${node.row}-${node.col}-cell`}>
+        <div
+          draggable={false}
+          className={styles.startEnd}
+        >
           <Image
             src="/finish4.svg"
             width={22}
             height={22}
-            className="position-absolute"
+            className={`position-absolute ${styles.startEndImg}`}
             style={{ userSelect: "none" }}
             alt="Picture of the author"
           />
@@ -129,10 +135,10 @@ const Cell = ({
         >
           <Image
             src="/wall.svg"
-            width={22}
-            height={22}
+            width={23}
+            height={24}
             className="position-absolute"
-            style={{ userSelect: "none" }}
+            style={{ userSelect: "none", top: '-1px', left: '-1' }}
             alt="Picture of the author"
           />
         </div>

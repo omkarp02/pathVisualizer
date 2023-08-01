@@ -17,6 +17,7 @@ import Navbar from "./Navbar";
 import SecondNavbar from "./secondNavbar";
 import { findThePathFromStartToFinish } from "@/utils/algoritms";
 import { mazeGeneratorAlgo } from "@/utils/algoritms/mazeGenerator";
+import { cloneDeep } from "lodash";
 
 export default function PathVisualizer() {
   const startEndInitialState = {
@@ -156,13 +157,12 @@ export default function PathVisualizer() {
   };
 
   const generateMaze = () => {
-    const mazeWallInOrder = mazeGeneratorAlgo(grid);
-    setGrid((prev)=> {
-      return [...prev]
-    })
+    grid = resetGridByCond(grid, "all", algorithm);
+    resetGrid("all")
+    const tempGrid = cloneDeep(grid);
+    const mazeWallInOrder = mazeGeneratorAlgo(tempGrid, startEnd);
+    setGrid(tempGrid);
   };
-
-
 
   useEffect(() => {
     initializeGrid();
@@ -179,16 +179,13 @@ export default function PathVisualizer() {
       <Navbar
         runAlgo={() => runAlgo(true)}
         generateMaze={() => generateMaze()}
-      />
-      <SecondNavbar
-        setDragState={setDragState}
-        setAlgorithm={setAlgorithm}
-        algorithm={algorithm}
         weight={weight}
         setWeight={setWeight}
+        setAlgorithm={setAlgorithm}
+        algorithm={algorithm}
         reset={(val) => resetGrid(val)}
       />
-      <div className={styles.mainDiv}>
+      <div className={`${styles.mainDiv} my-4`}>
         <div className={styles.gridContainer}>
           {grid.map((cols, colIndex) => {
             return (

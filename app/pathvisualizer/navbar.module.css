@@ -1,0 +1,8 @@
+.navbar {
+  width: 100%;
+  height: 60px;
+  padding-inline: 50px;
+  z-index: 10;
+  border-bottom: 3px solid var(--darkOrange);
+  align-items: center;
+}
