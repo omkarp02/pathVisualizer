@@ -6,6 +6,7 @@ import WeightButton from "../customComponent/weightButton";
 import Image from "next/image";
 import WallButton from "../customComponent/wallButton";
 import Dropdown from "../customComponent/dropdown";
+import RealButton from "../customComponent/realButton";
 
 const weightOptions = Array.from({ length: 9 }, (_, index) => {
   return { label: `${index + 2}`, value: Number(index + 2) };
@@ -26,6 +27,8 @@ const Navbar = ({
   setAlgorithm,
 }) => {
   const [resetValue, setResetValue] = useState("all");
+  const [show, setShow] = useState(false);
+
   const selectWeightChangeHandler = (val) => {
     setWeight({ flag: true, weight: val });
   };
@@ -71,16 +74,9 @@ const Navbar = ({
 
   return (
     <nav className={`${styles.navbar} d-flex justify-content-between`}>
-      <h4 style={{ margin: "0px" }}>Path Visualizer</h4>
+      <h4 style={{ margin: "0px" }}>Path Visualizer - {algorithm}</h4>
 
-      <div className="d-flex align-items-center" >
-        <Dropdown
-          value={algorithm}
-          options={algorithmOptions}
-          handleChange={(e) => {
-            setAlgorithm(e.target.value);
-          }}
-        />
+      <div className="d-flex align-items-center">
         <div className="d-flex px-2">
           <WeightButton
             value={weight.weight}
@@ -97,6 +93,7 @@ const Navbar = ({
             handleChange={selectChangeHandler}
             img={"/reset.png"}
           />
+          <RealButton onClick={() => setShow(prev => !prev)} />
         </div>
         <Button text={"Generate Maze"} onClick={generateMaze} />
         <CustomButton
@@ -104,6 +101,10 @@ const Navbar = ({
           onClick={runAlgo}
           variant={"info"}
           text={"Visualize"}
+          setAlgorithm={setAlgorithm}
+          algorithm={algorithm}
+          show={show}
+          setShow={setShow}
         />
       </div>
     </nav>

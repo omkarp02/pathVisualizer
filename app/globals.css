@@ -31,6 +31,10 @@ a {
   background: var(--gradient) !important;
 }
 
+.text-orange{
+  color: var(--orangeRed)
+}
+
 .contact-button {
   max-height: 35px;
   padding: 5px 20px;
@@ -66,6 +70,14 @@ a {
   position: relative;
 }
 
+.weightspan{
+  position: absolute;
+  left: 11px;
+  font-size: 8px;
+  top: 10px;
+  color: white;
+}
+
 .weightSelect {
   position: absolute;
   height: 0px;
@@ -94,27 +106,13 @@ a {
   border-radius: 0 0 50% 50%;
 }
 
-.visualizeContainer {
-  position: absolute;
-  width: 114px;
-  box-sizing: border-box;
-  text-align: center;
-  border: 2px solid var(--darkOrange);
-  top: 26px;
-  background-color: white;
-  border-radius: 0 0 20px 20px;
-  height: 0;
-  transition: all .3s;
-  overflow: hidden;
+.fullScreenBlocker{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
 }
 
-.visualizeContainerHeight{
-  height: 100px;
-  padding-top: 20px;
-}
-
-.visualizeSelect {
-}
 
 @media (prefers-color-scheme: dark) {
   html {

@@ -36,6 +36,7 @@ export default function PathVisualizer() {
   const [weight, setWeight] = useState({ flag: false, weight: 2 });
   const [algorithmInitialized, setAlgorithmInitialized] = useState(false);
   const [algorithm, setAlgorithm] = useState("dijkstra");
+  const [showFullBlocker, setShowFullScreenBlocker] = useState(false)
   const [arrowDirection, setArrowDirection] = useState("right");
 
   const initializeGrid = () => {
@@ -87,6 +88,7 @@ export default function PathVisualizer() {
       if (cell) {
         if (animate) {
           setTimeout(() => {
+            if(i === nodesInShortestPathOrder.length - 2) setShowFullScreenBlocker(false)
             cell.className = `${shortestPathStyle} ${animateShortestPathStyle}`;
           }, i * animationShortestPathSpeedTime + 500);
         } else {
@@ -102,6 +104,7 @@ export default function PathVisualizer() {
     animate
   ) => {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      
       if (i === visitedNodesInOrder.length) {
         if (animate) {
           setTimeout(() => {
@@ -116,6 +119,7 @@ export default function PathVisualizer() {
         if (cell) {
           if (animate) {
             setTimeout(() => {
+              if(i === 1) setShowFullScreenBlocker(true)
               cell.className = `${visitedStyle} ${
                 animate ? animateVisited : ""
               }`;
@@ -175,7 +179,7 @@ export default function PathVisualizer() {
   }, [startEnd]);
 
   return (
-    <>
+    <div className="position-relative"> 
       <Navbar
         runAlgo={() => runAlgo(true)}
         generateMaze={() => generateMaze()}
@@ -213,6 +217,11 @@ export default function PathVisualizer() {
           })}
         </div>
       </div>
-    </>
+      {
+        showFullBlocker ? <div className="fullScreenBlocker">
+        </div>
+        : ''
+      }
+    </div>
   );
 }

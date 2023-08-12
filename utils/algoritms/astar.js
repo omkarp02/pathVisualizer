@@ -15,8 +15,8 @@ export const astar = (grid, src, dest) => {
     let winner = 0;
     if (openSet.length > 1) {
       for (let i = 1; i < openSet.length; i++) {
-        const winnerF = openSet[winner].distance + openSet[winner].h;
-        const normalF = openSet[i].distance + openSet[i].h;
+        const winnerF = openSet[winner].distance + openSet[winner].h + openSet[winner].weight;
+        const normalF = openSet[i].distance + openSet[i].h + openSet[i].weight;
         if (normalF < winnerF) {
           winner = i;
         }

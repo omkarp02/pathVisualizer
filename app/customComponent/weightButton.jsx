@@ -1,8 +1,7 @@
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 
-
-const WeightButton = ({  handleChange, options, img, width, height }) => {
+const WeightButton = ({value, handleChange, options, img, width, height }) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -13,12 +12,15 @@ const WeightButton = ({  handleChange, options, img, width, height }) => {
           setShow((prev) => !prev);
         }}
       >
-        <Image
-          src={img}
-          width={width ?? 25}
-          height={height ?? 25}
-          alt="Picture of the author"
-        />
+        <div className="position-relative">
+          <Image
+            src={img}
+            width={width ?? 25}
+            height={height ?? 25}
+            alt="Picture of the author"
+          />
+          <span className="weightspan">{value}</span>
+        </div>
       </button>
       <div className={`weightSelect ${show ? "increaseHeight" : ""}`}>
         <div className="weightList" style={{ height: "15px" }}></div>

@@ -1,9 +1,34 @@
 .customButtonContainer {
   padding: 10px;
+  position: relative;
+  width: 146px;
+  height: 38px;
+}
+
+.wrapper{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  box-shadow: 0px 0px 0px 3px var(--darkOrange) inset;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.algoList{
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: all .5s;
+}
+
+.increaseHeight{
+  padding-top: 10px;
+  height: 60px;
 }
 
 .customButtonContainer .custombutton {
   z-index: 20;
+  width: 120px;
   position: relative;
   background: none;
   font-weight: 600;
