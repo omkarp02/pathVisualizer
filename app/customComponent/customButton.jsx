@@ -33,6 +33,7 @@ const CustomButton = ({
             {algorithmOptions.map((e) => {
               return (
                 <div
+                  key={e.value}
                   className={`text-center ${
                     algorithm === e.value ? "text-orange" : ""
                   }`}

@@ -3,7 +3,7 @@ import styles from './index.module.css'
 
 const RealButton = ({onClick}) => {
   return (
-    <div className={`${styles.realButton} mx-2`} onClick={onClick} ontouchstart="">
+    <div className={`${styles.realButton} mx-2`} onClick={onClick} >
     </div>
   );
 };

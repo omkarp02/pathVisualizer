@@ -26,6 +26,7 @@ const WeightButton = ({value, handleChange, options, img, width, height }) => {
         <div className="weightList" style={{ height: "15px" }}></div>
         {options.map((e) => (
           <div
+            key={e.value}
             className="weightList"
             onClick={() => {
               handleChange(e.value);
