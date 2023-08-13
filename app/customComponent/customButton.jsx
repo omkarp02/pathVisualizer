@@ -5,7 +5,9 @@ import RealButton from "./realButton";
 
 const algorithmOptions = [
   { label: "dijkstra", value: "dijkstra" },
-  { label: "astar", value: "astar" },
+  { label: "A-star", value: "astar" },
+  { label: "A-star on steriods", value: "astar_on_steriod" },
+  { label: "DFS", value: "dfs" },
 ];
 
 const CustomButton = ({
@@ -17,10 +19,9 @@ const CustomButton = ({
   onClick,
   setAlgorithm,
   algorithm,
-  show, 
-  setShow
+  show,
+  setShow,
 }) => {
-
   return (
     <>
       <div className={styles.customButtonContainer}>
@@ -49,7 +50,7 @@ const CustomButton = ({
           <button
             data-content={text}
             onClick={() => {
-              setShow(false)
+              setShow(false);
               onClick();
             }}
             className={`${styles.custombutton} `}

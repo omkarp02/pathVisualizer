@@ -23,12 +23,12 @@
 
 .increaseHeight{
   padding-top: 10px;
-  height: 60px;
+  height: 135px;
 }
 
 .customButtonContainer .custombutton {
   z-index: 20;
-  width: 120px;
+  width: 136px;
   position: relative;
   background: none;
   font-weight: 600;

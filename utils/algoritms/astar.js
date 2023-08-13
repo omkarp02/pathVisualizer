@@ -3,7 +3,7 @@
 
 import { Heap } from "./heap";
 
-export const astar = (grid, src, dest) => {
+export const astar = (grid, src, dest, pow) => {
   let openSet = [];
   let closedSet = [];
   const visitedNodes = [];
@@ -35,7 +35,7 @@ export const astar = (grid, src, dest) => {
     removeCurrent(openSet, current);
 
     //updating the neighbour of the current node
-    updateUnvisitedNodeNeighbor(current, grid, closedSet, openSet, dest);
+    updateUnvisitedNodeNeighbor(current, grid, closedSet, openSet, dest, pow);
   }
 
   return visitedNodes;
@@ -46,7 +46,8 @@ const updateUnvisitedNodeNeighbor = (
   grid,
   closedSet,
   openSet,
-  dest
+  dest, 
+  pow
 ) => {
   const { row, col } = curNode;
   const neighbors = [];
@@ -78,15 +79,15 @@ const updateUnvisitedNodeNeighbor = (
       }
 
       if (newPath) {
-        node.h = heuristic(node, dest);
+        node.h = heuristic(node, dest, pow);
         node.prevNode = curNode;
       }
     }
   }
 };
 
-const heuristic = (node, end) => {
-  return Math.abs(node.row - end.row) + Math.abs(node.col - end.col);
+const heuristic = (node, end, pow) => {
+  return Math.pow(Math.abs(node.row - end.row) + Math.abs(node.col - end.col), pow);
 };
 
 const removeCurrent = (openSet, current) => {

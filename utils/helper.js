@@ -5,10 +5,10 @@ export const FINISH_NODE_COL = 35;
 export const row = 22;
 export const column = 55;
 
-// export const START_NODE_ROW = 10;
-// export const START_NODE_COL = 15;
-// export const FINISH_NODE_ROW = 10;
-// export const FINISH_NODE_COL = 35;
+// export const START_NODE_ROW = 1;
+// export const START_NODE_COL = 1;
+// export const FINISH_NODE_ROW = 9;
+// export const FINISH_NODE_COL = 9;
 // export const row = 10;
 // export const column = 10;
 

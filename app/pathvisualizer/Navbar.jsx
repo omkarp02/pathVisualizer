@@ -5,17 +5,11 @@ import CustomButton from "../customComponent/customButton";
 import WeightButton from "../customComponent/weightButton";
 import Image from "next/image";
 import WallButton from "../customComponent/wallButton";
-import Dropdown from "../customComponent/dropdown";
 import RealButton from "../customComponent/realButton";
 
 const weightOptions = Array.from({ length: 9 }, (_, index) => {
   return { label: `${index + 2}`, value: Number(index + 2) };
 });
-
-const algorithmOptions = [
-  { label: "dijkstra", value: "dijkstra" },
-  { label: "astar", value: "astar" },
-];
 
 const Navbar = ({
   runAlgo,
