@@ -87,12 +87,14 @@ const Navbar = ({
             handleChange={selectChangeHandler}
             img={"/reset.png"}
           />
-          <RealButton onClick={() => setShow(prev => !prev)} />
+          <RealButton onClick={() => runAlgo(algorithm)} />
         </div>
         <Button text={"Generate Maze"} onClick={generateMaze} />
         <CustomButton
           color="white"
-          onClick={runAlgo}
+          runAlgo={(val) => {
+            runAlgo(val);
+          }}
           variant={"info"}
           text={"Visualize"}
           setAlgorithm={setAlgorithm}

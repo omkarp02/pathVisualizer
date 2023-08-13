@@ -18,6 +18,7 @@ import SecondNavbar from "./secondNavbar";
 import { findThePathFromStartToFinish } from "@/utils/algoritms";
 import { mazeGeneratorAlgo } from "@/utils/algoritms/mazeGenerator";
 import { cloneDeep } from "lodash";
+import Speedometer from "../customComponent/speedometer";
 
 export default function PathVisualizer() {
   const startEndInitialState = {
@@ -76,8 +77,8 @@ export default function PathVisualizer() {
   };
 
   const animateShortestPath = (nodesInShortestPathOrder, animate) => {
-    if(nodesInShortestPathOrder.length === 0) {
-      setShowFullScreenBlocker(false)
+    if (nodesInShortestPathOrder.length === 0) {
+      setShowFullScreenBlocker(false);
       return;
     }
     if (nodesInShortestPathOrder[1]) {
@@ -137,14 +138,14 @@ export default function PathVisualizer() {
     }
   };
 
-  const runAlgo = (animate) => {
-    grid = resetGridByCond(grid, "keepWallAndWeight", algorithm);
+  const runAlgo = (algo, animate) => {
+    grid = resetGridByCond(grid, "keepWallAndWeight", algo);
     resetGrid("keepWallAndWeight", true);
     const { start, end } = startEnd;
     const startNode = grid[start.row][start.col];
     const finishNode = grid[end.row][end.col];
     const { visitedNodesInOrder, nodesInShortestPathOrder } =
-      findThePathFromStartToFinish(grid, startNode, finishNode, algorithm);
+      findThePathFromStartToFinish(grid, startNode, finishNode, algo);
     animateNodes(visitedNodesInOrder, nodesInShortestPathOrder, animate);
     if (!algorithmInitialized) setAlgorithmInitialized(true);
   };
@@ -169,7 +170,7 @@ export default function PathVisualizer() {
     grid = resetGridByCond(grid, "all", algorithm);
     resetGrid("all");
     const tempGrid = cloneDeep(grid);
-    const mazeWallInOrder = mazeGeneratorAlgo(tempGrid, startEnd);
+    mazeGeneratorAlgo(tempGrid, startEnd);
     setGrid(tempGrid);
   };
 
@@ -179,14 +180,14 @@ export default function PathVisualizer() {
 
   useEffect(() => {
     if (algorithmInitialized) {
-      runAlgo(false);
+      runAlgo(algorithm, false);
     }
   }, [startEnd]);
 
   return (
-    <div className="position-relative">
+    <div className="position-relative custom-cursor">
       <Navbar
-        runAlgo={() => runAlgo(true)}
+        runAlgo={(val) => runAlgo(val, true)}
         generateMaze={() => generateMaze()}
         weight={weight}
         setWeight={setWeight}
