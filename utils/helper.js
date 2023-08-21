@@ -20,7 +20,7 @@ export const column = 55;
 // export const column = 4;
 
 
-export const animationVisitedNodeSpeedTime = 5
+export const animationVisitedNodeSpeedTime = 50
 export const animationShortestPathSpeedTime = 60
 
 export const createGrid = (algo) => {

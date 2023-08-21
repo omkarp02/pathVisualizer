@@ -24,7 +24,7 @@ const CustomButton = ({
 }) => {
   return (
     <>
-      <div className={styles.customButtonContainer}>
+      <div className={styles.customButtonContainer} onMouseOver={()=> setShow(true)} onMouseLeave={()=> setShow(false)}>
         <div className={styles.wrapper}>
           <div
             className={`${styles.algoList} ${
@@ -40,7 +40,6 @@ const CustomButton = ({
                   }`}
                   onClick={() => {
                     setAlgorithm(e.value);
-                    setShow((prev) => !prev);
                     runAlgo(e.value);
                   }}
                 >

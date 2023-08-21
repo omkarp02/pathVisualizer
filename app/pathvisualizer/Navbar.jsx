@@ -6,14 +6,24 @@ import WeightButton from "../customComponent/weightButton";
 import Image from "next/image";
 import WallButton from "../customComponent/wallButton";
 import RealButton from "../customComponent/realButton";
+import { animationVisitedNodeSpeedTime } from "@/utils/helper";
 
 const weightOptions = Array.from({ length: 9 }, (_, index) => {
   return { label: `${index + 2}`, value: Number(index + 2) };
 });
 
+const speedOptions =[
+  {label: '0.5x', value: 15},
+  {label: '0.25x', value: 10},
+  {label: '1x', value: 5},
+  {label: '2x', value: 3},
+];
+
 const Navbar = ({
   runAlgo,
   generateMaze,
+  speed,
+  setSpeed,
   weight,
   setWeight,
   reset,
@@ -77,6 +87,7 @@ const Navbar = ({
             options={weightOptions}
             handleChange={selectWeightChangeHandler}
             img={"/weight1.svg"}
+            name={'weight'}
           />
           <WallButton setWeight={setWeight} />
           <WeightButton
@@ -87,7 +98,15 @@ const Navbar = ({
             handleChange={selectChangeHandler}
             img={"/reset.png"}
           />
-          <RealButton onClick={() => runAlgo(algorithm)} />
+          <WeightButton
+            value={speed}
+            options={speedOptions}
+            width={18}
+            height={18}
+            handleChange={(val) => setSpeed(val)}
+            name={'speed'}
+          />
+          {/* <RealButton onClick={() => runAlgo(algorithm)} /> */}
         </div>
         <Button text={"Generate Maze"} onClick={generateMaze} />
         <CustomButton

@@ -19,6 +19,7 @@ import { findThePathFromStartToFinish } from "@/utils/algoritms";
 import { mazeGeneratorAlgo } from "@/utils/algoritms/mazeGenerator";
 import { cloneDeep } from "lodash";
 import Speedometer from "../customComponent/speedometer";
+import PreLoader from "../customComponent/preLoader";
 
 export default function PathVisualizer() {
   const startEndInitialState = {
@@ -33,6 +34,8 @@ export default function PathVisualizer() {
   let [grid, setGrid] = useState([]);
   const [startEnd, setStartEnd] = useState(startEndInitialState);
   const [dragStart, setDragStart] = useState(false);
+  const [loader, setLoader] = useState(true)
+  const [speed, setSpeed] = useState(5)
   const [dragState, setDragState] = useState(null);
   const [weight, setWeight] = useState({ flag: false, weight: 2 });
   const [algorithmInitialized, setAlgorithmInitialized] = useState(false);
@@ -41,8 +44,11 @@ export default function PathVisualizer() {
   const [arrowDirection, setArrowDirection] = useState("right");
 
   const initializeGrid = () => {
+    
     const tempGrid = createGrid(algorithm);
     setGrid(tempGrid);
+    setLoader(false)
+
   };
 
   const resetGrid = (state, onlyCss) => {
@@ -115,7 +121,7 @@ export default function PathVisualizer() {
         if (animate) {
           setTimeout(() => {
             animateShortestPath(nodesInShortestPathOrder, animate);
-          }, i * animationVisitedNodeSpeedTime);
+          }, i * speed);
         } else {
           animateShortestPath(nodesInShortestPathOrder, animate);
         }
@@ -129,7 +135,7 @@ export default function PathVisualizer() {
               cell.className = `${visitedStyle} ${
                 animate ? animateVisited : ""
               }`;
-            }, i * animationVisitedNodeSpeedTime);
+            }, i * speed);
           } else {
             cell.className = `${visitedStyle} ${animate ? animateVisited : ""}`;
           }
@@ -190,12 +196,14 @@ export default function PathVisualizer() {
         runAlgo={(val) => runAlgo(val, true)}
         generateMaze={() => generateMaze()}
         weight={weight}
+        speed={speed}
+        setSpeed={setSpeed}
         setWeight={setWeight}
         setAlgorithm={setAlgorithm}
         algorithm={algorithm}
         reset={(val) => resetGrid(val)}
       />
-      <div className={`${styles.mainDiv} my-4`}>
+      {loader ? <PreLoader /> : <div className={`${styles.mainDiv} my-4`}>
         <div className={styles.gridContainer}>
           {grid.map((cols, colIndex) => {
             return (
@@ -222,8 +230,9 @@ export default function PathVisualizer() {
             );
           })}
         </div>
-      </div>
+      </div>}
       {showFullBlocker ? <div className="fullScreenBlocker"></div> : ""}
+      
     </div>
   );
 }
